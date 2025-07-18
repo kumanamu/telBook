@@ -5,9 +5,14 @@ import exception.InputValidation;
 import exception.MyException;
 import service.TelBookService;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import static db.DBConn.getConnection;
 
 public class UserView {
     private Scanner sc = new Scanner(System.in);
@@ -178,7 +183,17 @@ public class UserView {
                 .forEach(x -> System.out.println(x));
     }
 
-    public void searchView() {
+    public List<TelDto> searchView() {
         System.out.println("=== 전화번호 검색 ===");
+        System.out.println("이름(전체 또는 일부)을 입력하세요:");
+        String keyword = sc.next();
+        List<TelDto> dtoList = telBookService.searchList(keyword);
+
+        if (dtoList.size() == 0) {
+            System.out.println("찾는 데이터가 없습니다");
+        } else {
+            dtoList.stream().forEach(x -> System.out.println(x));
+        }
+        return dtoList;
     }
 }
