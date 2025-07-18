@@ -66,6 +66,7 @@ public class UserView {
         dto.setAge(age);
         dto.setAddress(address);
         dto.setPhone(phone);
+
         // 서비스에 insert 요청하기
         int result = telBookService.insertData(dto);
         // result > 0 : insert 성공, result = 0 : 실패
@@ -78,23 +79,93 @@ public class UserView {
 
     public void updateView() {
         System.out.println("=== 전화번호 수정 ===");
+        System.out.println("수정할 ID를 입력하세요");
+        int updateId = sc.nextInt();
+        // 수정할 데이터를 가져온다.(TelDto)
+        TelDto oldDto = telBookService.findById(updateId);
+        if (oldDto == null) {
+            System.out.println("찾는 데이터가 없어요");
+        } else {
+            // 수정작업 진행
+            boolean yesOrNo = true;
+            // 이름 수정 처리
+            while (yesOrNo) {
+                System.out.println("수정 전 : " + oldDto.getName());
+                System.out.println("수정할까요(Y/N)?");
+                String strYesOrNo = sc.next();
+                if (strYesOrNo.toUpperCase().equals("Y")) {
+                    System.out.println("수정할 이름 : ");
+                    oldDto.setName(sc.next());
+                    yesOrNo = false;
+                } else {
+                    yesOrNo = false;
+                }
+            }
+            // 나이 수정 처리
+            yesOrNo = true;
+            while (yesOrNo) {
+                System.out.println("수정 전 나이 : " + oldDto.getAge());
+                System.out.println("수정할까요(Y/N)?");
+                String strYesOrNo = sc.next();
+                if (strYesOrNo.toUpperCase().equals("Y")) {
+                    System.out.println("수정할 나이 : ");
+                    oldDto.setAge(sc.nextInt());
+                    yesOrNo = false;
+                } else {
+                    yesOrNo = false;
+                }
+            }
+            // 주소 수정 처리
+            yesOrNo = true;
+            while (yesOrNo) {
+                System.out.println("수정 전 주소 : " + oldDto.getAddress());
+                System.out.println("수정할까요(Y/N)?");
+                String strYesOrNo = sc.next();
+                if (strYesOrNo.toUpperCase().equals("Y")) {
+                    System.out.println("수정할 주소 : ");
+                    oldDto.setAddress(sc.next());
+                    yesOrNo = false;
+                } else {
+                    yesOrNo = false;
+                }
+            }
+            // 전화번호 수정 처리
+            yesOrNo = true;
+            while (yesOrNo) {
+                System.out.println("수정 전 전번 : " + oldDto.getPhone());
+                System.out.println("수정할까요(Y/N)?");
+                String strYesOrNo = sc.next();
+                if (strYesOrNo.toUpperCase().equals("Y")) {
+                    System.out.println("수정할 전번 : ");
+                    oldDto.setPhone(sc.next());
+                    yesOrNo = false;
+                } else {
+                    yesOrNo = false;
+                }
+            }
+        }
+        // 위에서 수정작업 완료
+        int result = telBookService.UpdateData(oldDto);
+        if (result > 0) {
+            System.out.println("수정되었습니다.");
+        } else {
+            System.out.println("수정 실패");
+        }
     }
 
     public void deleteView() {
         System.out.println("=== 전화번호 삭제 ===");
-        System.out.println("삭제할 전화번호의 아이디를 입력하세요");
+        System.out.println("삭제할 ID를 입력하세요");
         int deleteId = sc.nextInt();
-        //삭제 요청후 int타입으로 받기
+        // 삭제 요청 후 결과를 int 타입으로 받기
         int result = telBookService.deleteData(deleteId);
-        //result 값이 양수면 성공, 음수면 실패
+        // result 값이 양수면 성공, 그렇지 않으면 실패
         if (result > 0) {
-            System.out.println("정상적으로 삭제 완료되었습니다");
+            System.out.println("정상적으로 삭제되었습니다.");
         } else {
-            System.out.println("삭제가 실패 하였습니다");
-            System.out.println("아이디가 맞지 않습니다");
+            System.out.println("삭제되지 않았습니다.");
+            System.out.println("관리자에게 문의하세요.");
         }
-
-
     }
 
     public void findAllView() {
